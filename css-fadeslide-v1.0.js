@@ -75,7 +75,7 @@ $.fn.fadeIn_ = $.fn.fadeIn;
 ----------------------------------------------------------------------- */
 $.fn.fadeIn = function(speed, callback){
 
-	$els = this;
+	var $els = this;
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
@@ -128,7 +128,7 @@ $.fn.fadeOut_ = $.fn.fadeOut;
 ----------------------------------------------------------------------- */
 $.fn.fadeOut = function(speed, callback){
 
-	$els = this;
+	var $els = this;
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
@@ -179,7 +179,7 @@ $.fn.fadeToggle_ = $.fn.fadeToggle;
 ----------------------------------------------------------------------- */
 $.fn.fadeToggle = function(speed, callback){
 
-	$els = this;
+	var $els = this;
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
@@ -212,7 +212,7 @@ $.fn.slideUp_ = $.fn.slideUp;
 ----------------------------------------------------------------------- */
 $.fn.slideUp = function(speed, callback){
 
-	$els = this;
+	var $els = this;
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
@@ -280,7 +280,7 @@ $.fn.slideDown_ = $.fn.slideDown;
 ----------------------------------------------------------------------- */
 $.fn.slideDown = function(speed, callback){
 
-	$els = this;
+	var $els = this;
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
@@ -359,7 +359,7 @@ $.fn.slideToggle_ = $.fn.slideToggle;
 ----------------------------------------------------------------------- */
 $.fn.slideToggle = function(speed, callback){
 
-	$els = this;
+	var $els = this;
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
