@@ -163,7 +163,7 @@ $.fn.fadeOut = function(speed, callback){
 	var cssTransition = function($el) {
 		setFadeTransition($el, speed);
 		$el.css('opacity', '0').on('transitionend webkitTransitionEnd', function(){
-			$el.hide().off('transitionend webkitTransitionEnd');
+			$el.removeAttr('style').hide().off('transitionend webkitTransitionEnd');
 			if ($.isFunction(callback)) callback();
 		});
 	};
@@ -262,7 +262,7 @@ $.fn.slideUp = function(speed, callback){
 		setTimeout(function(){
 			$el.on('transitionend webkitTransitionEnd', function(e){
 				if (e.originalEvent.propertyName == "height") {
-					$el.off('transitionend webkitTransitionEnd');
+					$el.removeAttr('style').hide().off('transitionend webkitTransitionEnd');
 					if ($.isFunction(callback)) callback();
 				}
 			}).css({
