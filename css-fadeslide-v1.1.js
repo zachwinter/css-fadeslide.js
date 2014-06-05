@@ -1,9 +1,10 @@
 /* 
  *
- * css-fadeslide.js v1.0 (c) 2014
+ * css-fadeslide.js v1.1 (c) 2014
  * Enable CSS Transitions for jQuery fadeIn/Out/Toggle & slideUp/Down/Toggle
- * 
+ *
  * @author  : Zach Winter (contact@zachwinter.com)
+ * @link    : https://github.com/zachwinter/css-fadeslide.js
  * @license : MIT (http://www.opensource.org/licenses/mit-license.php)
  *
  */
@@ -13,8 +14,12 @@
 
 
 
-/* Shared Functions
+/* Shared Variables + Functions
 ======================================================================================= */
+
+/* Default transition speed.
+----------------------------------------------------------------------- */
+var _SPEED = 400;
 
 /* Detect CSS transition support.
 ----------------------------------------------------------------------- */
@@ -43,9 +48,23 @@ var setFadeTransition = function($el, speed) {
 ----------------------------------------------------------------------- */
 var setSlideTransition = function($el, speed) {
 	$el.css({
-		'-webkit-transition' : 'height ' + speed/1000 + 's ease, margin ' + speed/1000 + 's ease, padding ' + speed/1000 + 's ease',
-		'-moz-transition'    : 'height ' + speed/1000 + 's ease, margin ' + speed/1000 + 's ease, padding ' + speed/1000 + 's ease',
-		'transition'         : 'height ' + speed/1000 + 's ease, margin ' + speed/1000 + 's ease, padding ' + speed/1000 + 's ease'
+		'-webkit-transition' : 'height         ' + speed/1000 + 's ease, ' +
+		                       'margin-top     ' + speed/1000 + 's ease, ' +
+		                       'margin-bottom  ' + speed/1000 + 's ease, ' +
+		                       'padding-top    ' + speed/1000 + 's ease, ' +
+		                       'padding-bottom ' + speed/1000 + 's ease',
+
+		'-moz-transition'    : 'height         ' + speed/1000 + 's ease, ' +
+		                       'margin-top     ' + speed/1000 + 's ease, ' +
+		                       'margin-bottom  ' + speed/1000 + 's ease, ' +
+		                       'padding-top    ' + speed/1000 + 's ease, ' +
+		                       'padding-bottom ' + speed/1000 + 's ease',
+
+		'transition'         : 'height         ' + speed/1000 + 's ease, ' +
+		                       'margin-top     ' + speed/1000 + 's ease, ' +
+		                       'margin-bottom  ' + speed/1000 + 's ease, ' +
+		                       'padding-top    ' + speed/1000 + 's ease, ' +
+		                       'padding-bottom ' + speed/1000 + 's ease'
 	});
 };
 
@@ -76,9 +95,12 @@ $.fn.fadeIn = function(speed, callback){
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
+	if (speed === 'fast') { speed = 200; }
+	if (speed === 'slow') { speed = 600; }
+
 	if ($.isFunction(speed)) {
-		callback = speed;
-		speed    = 300;
+		callback =  speed;
+		speed    = _SPEED;
 	}
 
 	/* CSS Transition
@@ -89,7 +111,7 @@ $.fn.fadeIn = function(speed, callback){
 		setTimeout(function(){
 			$el.on('transitionend webkitTransitionEnd', function(){
 				$el.off('transitionend webkitTransitionEnd');
-				if (typeof(callback) != 'undefined') callback();
+				if ($.isFunction(callback)) callback();
 			}).css('opacity', '1');
 		}, 20);
 	};
@@ -128,19 +150,21 @@ $.fn.fadeOut = function(speed, callback){
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
+	if (speed === 'fast') { speed = 200; }
+	if (speed === 'slow') { speed = 600; }
+
 	if ($.isFunction(speed)) {
-		callback = speed;
-		speed    = 300;
+		callback =  speed;
+		speed    = _SPEED;
 	}
 
 	/* CSS Transition
 	======================================================= */
 	var cssTransition = function($el) {
 		setFadeTransition($el, speed);
-		$el.css('opacity', '0');
-		$el.on('transitionend webkitTransitionEnd', function(){
-			$el.hide().removeAttr('style').off('transitionend webkitTransitionEnd');
-			if (typeof(callback) != 'undefined') callback();
+		$el.css('opacity', '0').on('transitionend webkitTransitionEnd', function(){
+			$el.hide().off('transitionend webkitTransitionEnd');
+			if ($.isFunction(callback)) callback();
 		});
 	};
 
@@ -178,9 +202,12 @@ $.fn.fadeToggle = function(speed, callback){
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
+	if (speed === 'fast') { speed = 200; }
+	if (speed === 'slow') { speed = 600; }
+
 	if ($.isFunction(speed)) {
-		callback = speed;
-		speed    = 300;
+		callback =  speed;
+		speed    = _SPEED;
 	}
 
 	/* Init
@@ -211,9 +238,12 @@ $.fn.slideUp = function(speed, callback){
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
+	if (speed === 'fast') { speed = 200; }
+	if (speed === 'slow') { speed = 600; }
+
 	if ($.isFunction(speed)) {
-		callback = speed;
-		speed    = 300;
+		callback =  speed;
+		speed    = _SPEED;
 	}
 
 	/* CSS Transition
@@ -233,12 +263,14 @@ $.fn.slideUp = function(speed, callback){
 			$el.on('transitionend webkitTransitionEnd', function(e){
 				if (e.originalEvent.propertyName == "height") {
 					$el.off('transitionend webkitTransitionEnd');
-					if (typeof(callback) != 'undefined') callback();
+					if ($.isFunction(callback)) callback();
 				}
 			}).css({
-				'height'  : '0px',
-				'margin'  : '0px',
-				'padding' : '0px'
+				'height'         : '0px',
+				'margin-top'     : '0px',
+				'margin-bottom'  : '0px',
+				'padding-top'    : '0px',
+				'padding-bottom' : '0px'
 			});
 		}, 20);
 
@@ -278,29 +310,51 @@ $.fn.slideDown = function(speed, callback){
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
+	if (speed === 'fast') { speed = 200; }
+	if (speed === 'slow') { speed = 600; }
+
 	if ($.isFunction(speed)) {
-		callback = speed;
-		speed    = 300;
+		callback =  speed;
+		speed    = _SPEED;
 	}
 
 	/* CSS Transition
 	======================================================= */
 	var cssTransition = function($el) {
 
+		$el.removeAttr('style');
+
 		removeTransition($el);
 
-		var margin  = $el.css('margin'),
-		    padding = $el.css('padding'),
-		    height  = $el.css({
-			    'height'  : 'auto',
-			    'display' : 'block'
-		    }).outerHeight();
+		var $clone = $el.clone();
+
+		$clone.insertAfter($el);
+
+		$clone.css({
+			'height'   : 'auto',
+			'display'  : 'block',
+			'position' : 'fixed',
+			'top'      : '-200%',
+			'left'     : '-200%',
+			'right'    : '200%'
+		});
+
+		var marginTop     = $clone.css('margin-top'),
+		    marginBottom  = $clone.css('margin-bottom'),
+		    paddingTop    = $clone.css('padding-top'),
+		    paddingBottom = $clone.css('padding-bottom'),
+		    height        = $clone.outerHeight();
+
+		$clone.remove();
 
 		$el.css({
-			'height'   : '0px', 
-			'padding'  : '0px',
-			'margin'   : '0px',
-			'overflow' : 'hidden'
+			'display'        : 'block',
+			'height'         : '0px', 
+			'padding-top'    : '0px',
+			'padding-bottom' : '0px',
+			'margin-top'     : '0px',
+			'margin-bottom'  : '0px',
+			'overflow'       : 'hidden'
 		});
 
 		setTimeout(function(){
@@ -311,12 +365,14 @@ $.fn.slideDown = function(speed, callback){
 			$el.on('transitionend webkitTransitionEnd', function(e){
 				if (e.originalEvent.propertyName == "height") {
 					$el.off('transitionend webkitTransitionEnd').css('height', 'auto');
-					if (typeof(callback) != 'undefined') callback();
+					if ($.isFunction(callback)) callback();
 				}
 			}).css({
-				'height'  : height,
-				'padding' : padding,
-				'margin'  : margin
+				'height'         : height,
+				'padding-top'    : paddingTop,
+				'padding-bottom' : paddingBottom,
+				'margin-top'     : marginTop,
+				'margin-bottom'  : marginBottom
 			});
 		}, 40); 
 
@@ -356,9 +412,12 @@ $.fn.slideToggle = function(speed, callback){
 
 	/* Parameter Normalization + Default Speed
 	======================================================= */
+	if (speed === 'fast') { speed = 200; }
+	if (speed === 'slow') { speed = 600; }
+
 	if ($.isFunction(speed)) {
-		callback = speed;
-		speed    = 300;
+		callback =  speed;
+		speed    = _SPEED;
 	}
 
 	/* Init
