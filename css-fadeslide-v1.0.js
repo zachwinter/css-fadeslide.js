@@ -384,4 +384,4 @@ $.fn.slideToggle = function(speed, callback){
 /* End Plugin
 ======================================================================================= */
 
-})(jQuery);
+})(jQuery); 
