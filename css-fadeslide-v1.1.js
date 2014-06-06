@@ -123,6 +123,18 @@ $.fn.fadeIn = function(speed, callback) {
 	var jqueryAnimation = function($el) {
 		$el.fadeIn_(speed, callback); 
 	};
+	
+	var performTransition = (function () {
+		if (SUPPORT) {
+			return function ($el) {
+				jqueryAnimation($el);
+			};
+		} else {
+			return function ($el) {
+				cssTransition($el);
+			};
+		}
+	}());
 
 	/* Init
 	======================================================= */
@@ -175,6 +187,18 @@ $.fn.fadeOut = function(speed, callback) {
 	var jqueryAnimation = function($el) {
 		$el.fadeOut_(speed, callback);
 	};
+	
+	var performTransition = (function () {
+		if (SUPPORT) {
+			return function ($el) {
+				jqueryAnimation($el);
+			};
+		} else {
+			return function ($el) {
+				cssTransition($el);
+			};
+		}
+	}());
 
 	/* Init
 	======================================================= */
@@ -284,6 +308,18 @@ $.fn.slideUp = function(speed, callback) {
 	var jqueryAnimation = function($el) {
 		$el.slideUp_(speed, callback);
 	};
+	
+	var performTransition = (function () {
+		if (SUPPORT) {
+			return function ($el) {
+				jqueryAnimation($el);
+			};
+		} else {
+			return function ($el) {
+				cssTransition($el);
+			};
+		}
+	}());
 
 	/* Init
 	======================================================= */
@@ -387,6 +423,18 @@ $.fn.slideDown = function(speed, callback) {
 	var jqueryAnimation = function($el) {
 		$el.slideDown_(speed, callback); 
 	};
+	
+	var performTransition = (function () {
+		if (SUPPORT) {
+			return function ($el) {
+				jqueryAnimation($el);
+			};
+		} else {
+			return function ($el) {
+				cssTransition($el);
+			};
+		}
+	}());
 
 	/* Init
 	======================================================= */
