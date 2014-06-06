@@ -25,6 +25,7 @@ Changelog
 **v1.2**
 * Added parameter normalization.
 * Added the ability to choose a timing function.
+* Updated method of chaining CSS property changes (got rid of those pesky 20ms setTimeout calls).
 
 **v1.1**
 * Fixed bug in fadeOut method.
