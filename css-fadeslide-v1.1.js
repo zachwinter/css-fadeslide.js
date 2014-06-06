@@ -141,7 +141,7 @@ $.fn.fadeIn = function(speed, callback) {
 	if ($els) {
 		$els.each(function() {
 			var $el = $(this);
-			SUPPORT ? cssTransition($el) : jqueryAnimation($el);
+			performTransition($el); // What do you think of doing it like this?
 		});
 	}
 
@@ -205,7 +205,7 @@ $.fn.fadeOut = function(speed, callback) {
 	if ($els) {
 		$els.each(function() {
 			var $el = $(this);
-			SUPPORT ? cssTransition($el) : jqueryAnimation($el);
+			performTransition($el);
 		});
 	}
 
@@ -241,7 +241,11 @@ $.fn.fadeToggle = function(speed, callback) {
 	if ($els) {
 		$els.each(function() {
 			var $el = $(this);
-			$el.is(':visible') ? $el.fadeOut(speed, callback) : $el.fadeIn(speed, callback);
+			if ($el.is(':visible')) {
+				$el.fadeOut(speed, callback);
+			} else {
+				$el.fadeIn(speed, callback);
+			}
 		});
 	}
 
@@ -441,7 +445,7 @@ $.fn.slideDown = function(speed, callback) {
 	if ($els) {
 		$els.each(function() {
 			var $el = $(this);
-			SUPPORT ? cssTransition($el) : jqueryAnimation($el);
+			performTransition($el);
 		});
 	}
 
@@ -477,7 +481,11 @@ $.fn.slideToggle = function(speed, callback) {
 	if ($els) {
 		$els.each(function() {
 			var $el = $(this);
-			$el.is(':visible') && $el.css('height') !== '0px' ? $el.slideUp(speed, callback) : $el.slideDown(speed, callback);
+			if ($el.is(':visible') && $el.css('height') !== '0px') {
+				$el.slideUp(speed, callback);
+			} else {
+				$el.slideDown(speed, callback);
+			}
 		});
 	}
 
