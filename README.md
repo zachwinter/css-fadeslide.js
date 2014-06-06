@@ -8,7 +8,7 @@ The default methods are stored and used for browsers that don't support CSS tran
 **Pretend it's not even there.**
 
 ```
-$(el).fadeIn(300)
+$(el).fadeIn(300);
 
 $(el).fadeOut({
 	duration : 300,
