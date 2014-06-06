@@ -9,7 +9,7 @@
  *
  */
 
-;(function(window, document, $){
+;(function(window, document, $) {
 "use strict";
 
 
@@ -24,12 +24,14 @@ var _SPEED = 400;
 /* Detect CSS transition support.
 ----------------------------------------------------------------------- */
 var transitionSupport = function() {
-	if (typeof(window.Modernizr) != 'undefined' && typeof(window.Modernizr.csstransitions) != 'undefined') {
+	if (typeof (window.Modernizr) !== 'undefined' && typeof (window.Modernizr.csstransitions) !== 'undefined') {
 		return Modernizr.csstransitions;
 	} else {
 		var a = document.createElement("div").style,
 		    b = [ a.transition, a.WebkitTransition, a.MozTransition ];
-		for (var i=0; i<b.length; i++) if (b[i] !== undefined) return true;
+		for (var i=0; i<b.length; i++) {
+			if (b[i] !== 'undefined') { return true; }
+		}
 		return false;
 	}
 }, SUPPORT = transitionSupport();
@@ -89,7 +91,7 @@ $.fn.fadeIn_ = $.fn.fadeIn;
 
 /* New Method
 ----------------------------------------------------------------------- */
-$.fn.fadeIn = function(speed, callback){
+$.fn.fadeIn = function(speed, callback) {
 
 	var $els = this;
 
@@ -108,10 +110,10 @@ $.fn.fadeIn = function(speed, callback){
 	var cssTransition = function($el) {
 		setFadeTransition($el, speed);
 		$el.css('opacity', '0').show();
-		setTimeout(function(){
-			$el.on('transitionend webkitTransitionEnd', function(){
+		setTimeout(function() {
+			$el.on('transitionend webkitTransitionEnd', function() {
 				$el.off('transitionend webkitTransitionEnd');
-				if ($.isFunction(callback)) callback();
+				if ($.isFunction(callback)) { callback(); }
 			}).css('opacity', '1');
 		}, 20);
 	};
@@ -121,13 +123,25 @@ $.fn.fadeIn = function(speed, callback){
 	var jqueryAnimation = function($el) {
 		$el.fadeIn_(speed, callback); 
 	};
+	
+	var performTransition = (function () {
+		if (SUPPORT) {
+			return function ($el) {
+				jqueryAnimation($el);
+			};
+		} else {
+			return function ($el) {
+				cssTransition($el);
+			};
+		}
+	}());
 
 	/* Init
 	======================================================= */
 	if ($els) {
-		$els.each(function(){
+		$els.each(function() {
 			var $el = $(this);
-			SUPPORT ? cssTransition($el) : jqueryAnimation($el);
+			performTransition($el); // What do you think of doing it like this?
 		});
 	}
 
@@ -144,7 +158,7 @@ $.fn.fadeOut_ = $.fn.fadeOut;
 
 /* New Method
 ----------------------------------------------------------------------- */
-$.fn.fadeOut = function(speed, callback){
+$.fn.fadeOut = function(speed, callback) {
 
 	var $els = this;
 
@@ -162,24 +176,36 @@ $.fn.fadeOut = function(speed, callback){
 	======================================================= */
 	var cssTransition = function($el) {
 		setFadeTransition($el, speed);
-		$el.css('opacity', '0').on('transitionend webkitTransitionEnd', function(){
+		$el.css('opacity', '0').on('transitionend webkitTransitionEnd', function() {
 			$el.removeAttr('style').hide().off('transitionend webkitTransitionEnd');
-			if ($.isFunction(callback)) callback();
+			if ($.isFunction(callback)) { callback(); }
 		});
 	};
 
 	/* jQuery Animation
 	======================================================= */
-	var jqueryAnimation = function($el){
+	var jqueryAnimation = function($el) {
 		$el.fadeOut_(speed, callback);
 	};
+	
+	var performTransition = (function () {
+		if (SUPPORT) {
+			return function ($el) {
+				jqueryAnimation($el);
+			};
+		} else {
+			return function ($el) {
+				cssTransition($el);
+			};
+		}
+	}());
 
 	/* Init
 	======================================================= */
 	if ($els) {
-		$els.each(function(){
+		$els.each(function() {
 			var $el = $(this);
-			SUPPORT ? cssTransition($el) : jqueryAnimation($el);
+			performTransition($el);
 		});
 	}
 
@@ -196,7 +222,7 @@ $.fn.fadeToggle_ = $.fn.fadeToggle;
 
 /* New Method
 ----------------------------------------------------------------------- */
-$.fn.fadeToggle = function(speed, callback){
+$.fn.fadeToggle = function(speed, callback) {
 
 	var $els = this;
 
@@ -213,9 +239,13 @@ $.fn.fadeToggle = function(speed, callback){
 	/* Init
 	======================================================= */
 	if ($els) {
-		$els.each(function(){
+		$els.each(function() {
 			var $el = $(this);
-			$el.is(':visible') ? $el.fadeOut(speed, callback) : $el.fadeIn(speed, callback);
+			if ($el.is(':visible')) {
+				$el.fadeOut(speed, callback);
+			} else {
+				$el.fadeIn(speed, callback);
+			}
 		});
 	}
 
@@ -232,7 +262,7 @@ $.fn.slideUp_ = $.fn.slideUp;
 
 /* New Method
 ----------------------------------------------------------------------- */
-$.fn.slideUp = function(speed, callback){
+$.fn.slideUp = function(speed, callback) {
 
 	var $els = this;
 
@@ -259,11 +289,11 @@ $.fn.slideUp = function(speed, callback){
 			'overflow' : 'hidden'
 		});
 
-		setTimeout(function(){
-			$el.on('transitionend webkitTransitionEnd', function(e){
-				if (e.originalEvent.propertyName == "height") {
+		setTimeout(function() {
+			$el.on('transitionend webkitTransitionEnd', function(e) {
+				if (e.originalEvent.propertyName === "height") {
 					$el.removeAttr('style').hide().off('transitionend webkitTransitionEnd');
-					if ($.isFunction(callback)) callback();
+					if ($.isFunction(callback)) { callback(); }
 				}
 			}).css({
 				'height'         : '0px',
@@ -278,16 +308,28 @@ $.fn.slideUp = function(speed, callback){
 
 	/* jQuery Animation
 	======================================================= */
-	var jqueryAnimation = function($el){
+	var jqueryAnimation = function($el) {
 		$el.slideUp_(speed, callback);
 	};
+	
+	var performTransition = (function () {
+		if (SUPPORT) {
+			return function ($el) {
+				jqueryAnimation($el);
+			};
+		} else {
+			return function ($el) {
+				cssTransition($el);
+			};
+		}
+	}());
 
 	/* Init
 	======================================================= */
 	if ($els) {
-		$els.each(function(){
+		$els.each(function() {
 			var $el = $(this);
-			SUPPORT ? cssTransition($el) : jqueryAnimation($el);
+			performTransition($el); // Or more like this?
 		});
 	}
 
@@ -304,7 +346,7 @@ $.fn.slideDown_ = $.fn.slideDown;
 
 /* New Method
 ----------------------------------------------------------------------- */
-$.fn.slideDown = function(speed, callback){
+$.fn.slideDown = function(speed, callback) {
 
 	var $els = this;
 
@@ -357,15 +399,15 @@ $.fn.slideDown = function(speed, callback){
 			'overflow'       : 'hidden'
 		});
 
-		setTimeout(function(){
+		setTimeout(function() {
 			setSlideTransition($el, speed);
 		}, 20);
 
-		setTimeout(function(){
-			$el.on('transitionend webkitTransitionEnd', function(e){
-				if (e.originalEvent.propertyName == "height") {
+		setTimeout(function() {
+			$el.on('transitionend webkitTransitionEnd', function(e) {
+				if (e.originalEvent.propertyName === "height") {
 					$el.off('transitionend webkitTransitionEnd').css('height', 'auto');
-					if ($.isFunction(callback)) callback();
+					if ($.isFunction(callback)) { callback(); }
 				}
 			}).css({
 				'height'         : height,
@@ -383,13 +425,25 @@ $.fn.slideDown = function(speed, callback){
 	var jqueryAnimation = function($el) {
 		$el.slideDown_(speed, callback); 
 	};
+	
+	var performTransition = (function () {
+		if (SUPPORT) {
+			return function ($el) {
+				jqueryAnimation($el);
+			};
+		} else {
+			return function ($el) {
+				cssTransition($el);
+			};
+		}
+	}());
 
 	/* Init
 	======================================================= */
 	if ($els) {
-		$els.each(function(){
+		$els.each(function() {
 			var $el = $(this);
-			SUPPORT ? cssTransition($el) : jqueryAnimation($el);
+			performTransition($el);
 		});
 	}
 
@@ -406,7 +460,7 @@ $.fn.slideToggle_ = $.fn.slideToggle;
 
 /* New Method
 ----------------------------------------------------------------------- */
-$.fn.slideToggle = function(speed, callback){
+$.fn.slideToggle = function(speed, callback) {
 
 	var $els = this;
 
@@ -423,9 +477,13 @@ $.fn.slideToggle = function(speed, callback){
 	/* Init
 	======================================================= */
 	if ($els) {
-		$els.each(function(){
+		$els.each(function() {
 			var $el = $(this);
-			$el.is(':visible') && $el.css('height') !== '0px' ? $el.slideUp(speed, callback) : $el.slideDown(speed, callback);
+			if ($el.is(':visible') && $el.css('height') !== '0px') {
+				$el.slideUp(speed, callback);
+			} else {
+				$el.slideDown(speed, callback);
+			}
 		});
 	}
 
@@ -437,5 +495,3 @@ $.fn.slideToggle = function(speed, callback){
 ======================================================================================= */
 
 })(window, document, jQuery); 
-
-
