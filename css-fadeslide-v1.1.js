@@ -24,7 +24,7 @@ var _SPEED = 400;
 /* Detect CSS transition support.
 ----------------------------------------------------------------------- */
 var transitionSupport = function() {
-	if (typeof(window.Modernizr) != 'undefined' && typeof(window.Modernizr.csstransitions) != 'undefined') {
+	if (typeof (window.Modernizr) !== 'undefined' && typeof (window.Modernizr.csstransitions) !== 'undefined') {
 		return Modernizr.csstransitions;
 	} else {
 		var a = document.createElement("div").style,
@@ -262,6 +262,7 @@ $.fn.slideUp = function(speed, callback) {
 				if (e.originalEvent.propertyName == "height") {
 		setTimeout(function() {
 			$el.on('transitionend webkitTransitionEnd', function(e) {
+				if (e.originalEvent.propertyName === "height") {
 					$el.removeAttr('style').hide().off('transitionend webkitTransitionEnd');
 					if ($.isFunction(callback)) callback();
 				}
@@ -364,6 +365,7 @@ $.fn.slideDown = function(speed, callback) {
 				if (e.originalEvent.propertyName == "height") {
 		setTimeout(function() {
 			$el.on('transitionend webkitTransitionEnd', function(e) {
+				if (e.originalEvent.propertyName === "height") {
 					$el.off('transitionend webkitTransitionEnd').css('height', 'auto');
 					if ($.isFunction(callback)) callback();
 				}
