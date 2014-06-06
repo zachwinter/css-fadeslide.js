@@ -289,7 +289,6 @@ $.fn.slideUp = function(speed, callback) {
 			'overflow' : 'hidden'
 		});
 
-				if (e.originalEvent.propertyName == "height") {
 		setTimeout(function() {
 			$el.on('transitionend webkitTransitionEnd', function(e) {
 				if (e.originalEvent.propertyName === "height") {
@@ -404,7 +403,6 @@ $.fn.slideDown = function(speed, callback) {
 			setSlideTransition($el, speed);
 		}, 20);
 
-				if (e.originalEvent.propertyName == "height") {
 		setTimeout(function() {
 			$el.on('transitionend webkitTransitionEnd', function(e) {
 				if (e.originalEvent.propertyName === "height") {
