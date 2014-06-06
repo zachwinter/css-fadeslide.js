@@ -17,7 +17,7 @@ $(el).fadeOut({
 
 $(el).slideToggle('slow', function(){
 	// Woah.
-})
+});
 ```
 
 Changelog
