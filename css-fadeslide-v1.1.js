@@ -97,6 +97,7 @@ $.fn.fadeIn = function(speed, callback){
 	======================================================= */
 	if (speed === 'fast') { speed = 200; }
 	if (speed === 'slow') { speed = 600; }
+    if (speed === undefined) { speed = 400; }
 
 	if ($.isFunction(speed)) {
 		callback =  speed;
@@ -152,6 +153,7 @@ $.fn.fadeOut = function(speed, callback){
 	======================================================= */
 	if (speed === 'fast') { speed = 200; }
 	if (speed === 'slow') { speed = 600; }
+    if (speed === undefined) { speed = 400; }
 
 	if ($.isFunction(speed)) {
 		callback =  speed;
@@ -204,6 +206,7 @@ $.fn.fadeToggle = function(speed, callback){
 	======================================================= */
 	if (speed === 'fast') { speed = 200; }
 	if (speed === 'slow') { speed = 600; }
+    if (speed === undefined) { speed = 400; }
 
 	if ($.isFunction(speed)) {
 		callback =  speed;
@@ -240,6 +243,7 @@ $.fn.slideUp = function(speed, callback){
 	======================================================= */
 	if (speed === 'fast') { speed = 200; }
 	if (speed === 'slow') { speed = 600; }
+    if (speed === undefined) { speed = 400; }
 
 	if ($.isFunction(speed)) {
 		callback =  speed;
@@ -312,6 +316,7 @@ $.fn.slideDown = function(speed, callback){
 	======================================================= */
 	if (speed === 'fast') { speed = 200; }
 	if (speed === 'slow') { speed = 600; }
+    if (speed === undefined) { speed = 400; }
 
 	if ($.isFunction(speed)) {
 		callback =  speed;
@@ -414,6 +419,7 @@ $.fn.slideToggle = function(speed, callback){
 	======================================================= */
 	if (speed === 'fast') { speed = 200; }
 	if (speed === 'slow') { speed = 600; }
+    if (speed === undefined) { speed = 400; }
 
 	if ($.isFunction(speed)) {
 		callback =  speed;

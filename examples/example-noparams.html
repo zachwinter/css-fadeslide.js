@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>css-fadeslide</title>
+
+    <link rel="stylesheet" href="example.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="../css-fadeslide-v1.1.js"></script>
+    <script>
+        $(function() {
+            $('.btn.fade').click(function() {
+                var $content = $('.content .fade');
+
+                if($content.hasClass('hidden')) {
+                    $(this).text('Fade Out!');
+                    $content.removeClass('hidden');
+                    $content.fadeIn();
+                } else {
+                    $(this).text('Fade In!');
+                    $content.addClass('hidden');
+                    $content.fadeOut();
+                }
+            });
+
+            $('.btn.slide').click(function() {
+                var $content = $('.content .slide');
+
+                if($content.hasClass('hidden')) {
+                    $(this).text('Slide Up!');
+                    $content.removeClass('hidden');
+                    $content.slideDown();
+                } else {
+                    $(this).text('Slide Down!');
+                    $content.addClass('hidden');
+                    $content.slideUp();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <section class="container">
+        <nav class="tabs">
+            <div class="tab">
+                <button class="btn fade">Fade Out!</button>
+            </div>
+            <div class="tab">
+                <button class="btn slide">Slide Up!</button>
+            </div>
+        </nav>
+
+        <section class="content">
+            <div class="fade">
+                <h2>Fading</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dignissim, eros sed adipiscing accumsan, nisi mi venenatis urna, ac gravida lectus neque vel felis. Nulla quam nunc, ultrices ut lacus ac, congue iaculis ligula. Phasellus molestie consectetur ligula, gravida lobortis tortor ornare id. Aenean nec imperdiet elit. Proin id pharetra dui, eu lacinia risus. Fusce dapibus aliquam malesuada. Fusce et nunc tortor. Donec molestie nibh nibh, eu facilisis nisl commodo vel. Nullam congue urna accumsan tellus varius bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ac blandit tellus. Donec dignissim lacus rhoncus leo elementum sagittis. Vestibulum laoreet felis vitae eros aliquet pharetra. Duis placerat sed sapien eget posuere. In ut ante et dolor porta pellentesque id in tortor.</p>
+            </div>
+            <div class="slide">
+                <h2>Sliding</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dignissim, eros sed adipiscing accumsan, nisi mi venenatis urna, ac gravida lectus neque vel felis. Nulla quam nunc, ultrices ut lacus ac, congue iaculis ligula. Phasellus molestie consectetur ligula, gravida lobortis tortor ornare id. Aenean nec imperdiet elit. Proin id pharetra dui, eu lacinia risus. Fusce dapibus aliquam malesuada. Fusce et nunc tortor. Donec molestie nibh nibh, eu facilisis nisl commodo vel. Nullam congue urna accumsan tellus varius bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ac blandit tellus. Donec dignissim lacus rhoncus leo elementum sagittis. Vestibulum laoreet felis vitae eros aliquet pharetra. Duis placerat sed sapien eget posuere. In ut ante et dolor porta pellentesque id in tortor.</p>
+            </div>
+        </section>
+    </section>
+
+</body>
+</html>
