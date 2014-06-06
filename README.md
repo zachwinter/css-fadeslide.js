@@ -24,6 +24,7 @@ Changelog
 ---------
 **v1.2**
 * Added parameter normalization.
+* Added transitionEnd event normalization.
 * Added the ability to choose a timing function.
 * Updated method of chaining CSS property changes (got rid of those pesky 20ms setTimeout calls).
 
