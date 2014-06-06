@@ -29,7 +29,9 @@ var transitionSupport = function() {
 	} else {
 		var a = document.createElement("div").style,
 		    b = [ a.transition, a.WebkitTransition, a.MozTransition ];
-		for (var i=0; i<b.length; i++) if (b[i] !== undefined) return true;
+		for (var i=0; i<b.length; i++) {
+			if (b[i] !== 'undefined') { return true; }
+		}
 		return false;
 	}
 }, SUPPORT = transitionSupport();
@@ -111,7 +113,7 @@ $.fn.fadeIn = function(speed, callback) {
 		setTimeout(function() {
 			$el.on('transitionend webkitTransitionEnd', function() {
 				$el.off('transitionend webkitTransitionEnd');
-				if ($.isFunction(callback)) callback();
+				if ($.isFunction(callback)) { callback(); }
 			}).css('opacity', '1');
 		}, 20);
 	};
@@ -164,7 +166,7 @@ $.fn.fadeOut = function(speed, callback) {
 		setFadeTransition($el, speed);
 		$el.css('opacity', '0').on('transitionend webkitTransitionEnd', function() {
 			$el.removeAttr('style').hide().off('transitionend webkitTransitionEnd');
-			if ($.isFunction(callback)) callback();
+			if ($.isFunction(callback)) { callback(); }
 		});
 	};
 
@@ -264,7 +266,7 @@ $.fn.slideUp = function(speed, callback) {
 			$el.on('transitionend webkitTransitionEnd', function(e) {
 				if (e.originalEvent.propertyName === "height") {
 					$el.removeAttr('style').hide().off('transitionend webkitTransitionEnd');
-					if ($.isFunction(callback)) callback();
+					if ($.isFunction(callback)) { callback(); }
 				}
 			}).css({
 				'height'         : '0px',
@@ -288,7 +290,7 @@ $.fn.slideUp = function(speed, callback) {
 	if ($els) {
 		$els.each(function() {
 			var $el = $(this);
-			SUPPORT ? cssTransition($el) : jqueryAnimation($el);
+			performTransition($el); // Or more like this?
 		});
 	}
 
@@ -367,7 +369,7 @@ $.fn.slideDown = function(speed, callback) {
 			$el.on('transitionend webkitTransitionEnd', function(e) {
 				if (e.originalEvent.propertyName === "height") {
 					$el.off('transitionend webkitTransitionEnd').css('height', 'auto');
-					if ($.isFunction(callback)) callback();
+					if ($.isFunction(callback)) { callback(); }
 				}
 			}).css({
 				'height'         : height,
