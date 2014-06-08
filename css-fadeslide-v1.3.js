@@ -186,6 +186,51 @@ $.fn.redraw = function() {
 	return this;
 };
 
+/* Get CSS properties of hidden element.
+----------------------------------------------------------------------- */
+var getProperties = function($el) {
+
+	var $parent = $el.parent(),
+	    $container,
+	    $clone, 
+	    properties;
+
+	$parent.append('<div class="clone-container" />');
+
+	$container = $parent.find('.clone-container');
+	$container.css({
+		'width'    : $parent.outerWidth() + 'px',
+		'padding'  : $parent.css('padding'),
+		'height'   : 'auto',
+		'display'  : 'block',
+		'position' : 'fixed',
+		'top'      : '-300%',
+		'left'     : '-300%',
+		'right'    : 'auto',
+		'bottom'   : 'auto'
+	});
+
+	$clone = $el.clone();
+	$clone.css({
+		'display'    : 'block',
+		'height'     : 'auto',
+		'min-height' : '0'
+	}).appendTo($container);
+
+	properties = {
+		marginTop     : $clone.css('margin-top'),
+		marginBottom  : $clone.css('margin-bottom'),
+		paddingTop    : $clone.css('padding-top'),
+		paddingBottom : $clone.css('padding-bottom'),
+		height        : $clone.outerHeight()
+	};
+
+	$container.remove();
+
+	return properties;
+
+};
+
 
 
 /* Fade In
@@ -214,9 +259,9 @@ $.fn.fadeIn = function(args, callback) {
 		$el.removeTransition().css({
 			'opacity' : '0',
 			'display' : 'block'
-		});
+		}).setFadeTransition(_.duration, _.easing);
 
-		$el.setFadeTransition(_.duration, _.easing).on(transitionEnd, function(e){
+		$el.on(transitionEnd, function(e){
 			e.stopPropagation();
 			$el.off(transitionEnd).removeAttr('style').show().redraw();
 			if (typeof(_.callback) == "function") _.callback();
@@ -369,9 +414,9 @@ $.fn.slideUp = function(args, callback) {
 		$el.removeTransition().css({
 			'height'   : $el.outerHeight(),
 			'overflow' : 'hidden'
-		});
+		}).setSlideTransition(_.duration, _.easing);
 
-		$el.setSlideTransition(_.duration, _.easing).on(transitionEnd, function(e){
+		$el.on(transitionEnd, function(e){
 			e.stopPropagation();
 			if (e.originalEvent.propertyName == "height") {
 				$el.off(transitionEnd).redraw().removeAttr('style').hide().redraw();
@@ -438,46 +483,8 @@ $.fn.slideDown = function(args, callback) {
 	======================================================= */
 	var cssTransition = function($el) {
 
-		var transitionEnd,
-		    $parent,
-		    $container,
-		    $clone,
-		    marginTop,
-		    marginBottom,
-		    paddingTop,
-		    paddingBottom,
-		    height;
-		
-		$parent = $el.parent();
-		$parent.append('<div class="clone-container" />');
-
-		$container = $parent.find('.clone-container');
-		$container.css({
-			'width'    : $parent.outerWidth() + 'px',
-			'padding'  : $parent.css('padding'),
-			'height'   : 'auto',
-			'display'  : 'block',
-			'position' : 'fixed',
-			'top'      : '-300%',
-			'left'     : '-300%',
-			'right'    : 'auto',
-			'bottom'   : 'auto'
-		});
-
-		$clone = $el.clone();
-		$clone.css({
-			'display'    : 'block',
-			'height'     : 'auto',
-			'min-height' : '0'
-		}).appendTo($container);
-
-		marginTop     = $clone.css('margin-top');
-		marginBottom  = $clone.css('margin-bottom');
-		paddingTop    = $clone.css('padding-top');
-		paddingBottom = $clone.css('padding-bottom');
-		height        = $clone.outerHeight();
-
-		$container.remove();
+		var properties    = getProperties($el),
+		    transitionEnd = transitionEventName + '.slideDown';
 
 		$el.removeAttr('style').hide().removeTransition().css({
 			'display'        : 'block',
@@ -487,11 +494,9 @@ $.fn.slideDown = function(args, callback) {
 			'padding-bottom' : '0px',
 			'margin-top'     : '0px',
 			'margin-bottom'  : '0px'
-		});
+		}).setSlideTransition(_.duration, _.easing);
 
-		transitionEnd = transitionEventName + '.slideDown';
-
-		$el.setSlideTransition(_.duration, _.easing).on(transitionEnd, function(e){
+		$el.on(transitionEnd, function(e){
 			e.stopPropagation();
 			if (e.originalEvent.propertyName == "height") {
 				$el.off(transitionEnd).removeAttr('style').show().redraw();
@@ -500,11 +505,11 @@ $.fn.slideDown = function(args, callback) {
 		});
 
 		$el.css({
-			'height'         : height,
-			'padding-top'    : paddingTop,
-			'padding-bottom' : paddingBottom,
-			'margin-top'     : marginTop,
-			'margin-bottom'  : marginBottom
+			'height'         : properties.height,
+			'padding-top'    : properties.paddingTop,
+			'padding-bottom' : properties.paddingBottom,
+			'margin-top'     : properties.marginTop,
+			'margin-bottom'  : properties.marginBottom
 		});
 
 	};

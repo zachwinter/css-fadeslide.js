@@ -23,7 +23,7 @@ $(el).slideToggle('slow', function(){
 Changelog
 ---------
 **v1.3**
-* More updates to method used for determining the height of a hidden element.
+* Updated + broke out method for determining height (+ other properties) of hidden elements.
 * Minor refactoring. 
 
 **v1.2**
