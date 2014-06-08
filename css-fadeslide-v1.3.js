@@ -491,7 +491,7 @@ $.fn.slideDown = function(args, callback) {
 
 		transitionEnd = transitionEventName + '.slideDown';
 
-		$el.removeTransition().setSlideTransition(_.duration, _.easing).on(transitionEnd, function(e){
+		$el.setSlideTransition(_.duration, _.easing).on(transitionEnd, function(e){
 			e.stopPropagation();
 			if (e.originalEvent.propertyName == "height") {
 				$el.off(transitionEnd).removeAttr('style').show().redraw();
