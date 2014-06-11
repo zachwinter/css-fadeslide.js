@@ -1,11 +1,18 @@
 css-fadeslide.js
 ================
 
-Enable CSS Transitions for jQuery fadeIn/Out/Toggle & slideUp/Down/Toggle
+If the browser supports it, enable CSS Transitions for jQuery fadeIn/Out/Toggle & slideUp/Down/Toggle.
 
-The default methods are stored and used for browsers that don't support CSS transitions.
+## How to use
 
-**Pretend it's not even there.**
+Make sure you have jQuery loaded, then load the css-fadeslide.js file.
+
+```javascript
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="/js/css-fadeslide-v1.4.min.js"></script>
+```
+
+At this point, you can pretend it's not even there.
 
 ```javascript
 $(el).fadeIn(300);
@@ -20,25 +27,13 @@ $(el).slideToggle('slow', function(){
 });
 ```
 
-## How to use
+## Changelog
 
-First of all make sure you have jQuery loaded, then load the css-fadeslide.js file.
-This should then patch jQuery to Enable CSS Transitions.
+**v1.4**
+* Added animation queueing for chaining CSS property changes.
+* Toggling fade or slide animations now behave as if stop() is being used. 
+* Major refactoring & optimization.
 
-```javascript
-<script src="myproject/js/jQuery.js"></script>
-<script src="myproject/js/css-fadeslide/build/css-fadeslide.min.js"></script>
-```
-
-Or copy the dist/css-fadeslide.min.js file into your js folder and include it like this:
-
-```javascript
-<script src="myproject/js/jQuery.js"></script>
-<script src="myproject/js/css-fadeslide.min.js"></script>
-```
-
-Changelog
----------
 **v1.3**
 * Updated + broke out method for determining height (+ other properties) of hidden elements.
 * Minor refactoring. 
