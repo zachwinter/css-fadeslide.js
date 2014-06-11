@@ -22,7 +22,7 @@
 
       setSlideTransition()
       --------------------
-      Set appropraite CSS properties for slideDown() and slideUp().
+      Set appropriate CSS properties for slideDown() and slideUp().
 
       removeTransition()
       ------------------
@@ -42,36 +42,36 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 
 		var self = this;
 
+		// Array of functions.
+		self.queue = [];
+
 		// Active function.
 		self.active = 0;
 
-		// Array of functions.
-		self.chain = [];
-
-		// Method to add function to queue.
+		// Method for adding function to queue.
 		self.add = function(method) {
-			self.chain.push(method);
+			self.queue.push(method);
 		};
 
-		// Reset queue.
+		// Method for resetting queue.
 		self.reset = function() {
-			self.chain  = [];
+			self.queue  = [];
 			self.active = 0;
 		};
 
-		// Routing method.
-		self.route = function($el) {
+		// Method for initializing next function in queue.
+		self.next = function($el) {
 			self.active++;
 			setTimeout(function(){
-				if (typeof(self.chain[self.active]) !== 'undefined') {
-					self.chain[self.active]($el);
+				if (typeof(self.queue[self.active]) === 'function') {
+					self.queue[self.active]($el);
 				}
 			}, 20);
 		};
 
-		// Initialize queue.
+		// Method for initializing queue.
 		self.start = function($el) {
-			self.chain[0]($el);
+			self.queue[0]($el);
 		};
 
 	}
@@ -119,15 +119,15 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 
 			$el.Q.reset();
 
-			$el.Q.add(function($el) {
+			$el.Q.add(function() {
 				$el.removeTransition().css({
 					'display' : 'block',
 					'opacity' : '0'
 				}).setFadeTransition(_.duration, _.easing);
-				$el.Q.route($el);
+				$el.Q.next();
 			});
 
-			$el.Q.add(function($el) {
+			$el.Q.add(function() {
 				$el.on(transitionEnd + _.namespace, function(e) {
 					e.stopPropagation();
 					$el.off(transitionEnd + _.namespace).css({
@@ -137,15 +137,15 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 					$el.removeAttr('data-transition');
 					if (typeof(_.callback) === "function") _.callback();
 				});
-				$el.Q.route($el);
+				$el.Q.next();
 			});
 
-			$el.Q.add(function($el) {
+			$el.Q.add(function() {
 				$el.attr('data-transition', 'fadeIn').css('opacity', '1');
-				$el.Q.route($el);
+				$el.Q.next();
 			});
 
-			$el.Q.start($el);
+			$el.Q.start();
 
 		}
 
@@ -177,29 +177,29 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 
 			$el.Q.reset();
 
-			$el.Q.add(function($el) {
+			$el.Q.add(function() {
 				$el.removeTransition().css({
 					'display' : 'block'
 				}).setFadeTransition(_.duration, _.easing);
-				$el.Q.route($el);
+				$el.Q.next();
 			});
 
-			$el.Q.add(function($el) {
+			$el.Q.add(function() {
 				$el.on(transitionEnd + _.namespace, function(e){
 					e.stopPropagation();
 					$el.off(transitionEnd + _.namespace).removeAttr('style').css('display', 'none');
 					$el.removeAttr('data-transition');
 					if (typeof(_.callback) === "function") _.callback();
 				});
-				$el.Q.route($el);
+				$el.Q.next();
 			});
 
-			$el.Q.add(function($el) {
+			$el.Q.add(function() {
 				$el.attr('data-transition', 'fadeOut').css('opacity', '0');
-				$el.Q.route($el);
+				$el.Q.next();
 			});
 
-			$el.Q.start($el);
+			$el.Q.start();
 
 		}
 
@@ -266,28 +266,28 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 
 			if (typeof($el.attr('data-transition')) === "undefined") {
 
-				$el.Q.add(function($el){
+				$el.Q.add(function(){
 					$el.removeTransition()
-					$el.Q.route($el);
+					$el.Q.next();
 				});
 
-				$el.Q.add(function($el) {
+				$el.Q.add(function() {
 					$el.css({
 						'height'        : $el.outerHeight(),
 						'overflow'      : 'hidden',
 						'margin-bottom' : adjustedMargin + marginUnit
 					});
-					$el.Q.route($el);
+					$el.Q.next();
 				});	
 
-				$el.Q.add(function($el) {
+				$el.Q.add(function() {
 					$el.setSlideTransition(_.duration, _.easing);
-					$el.Q.route($el);
+					$el.Q.next();
 				});
 
 			}
 
-			$el.Q.add(function($el) {
+			$el.Q.add(function() {
 				$el.on(transitionEnd + _.namespace, function(e){
 					e.stopPropagation();
 					if (e.originalEvent.propertyName === "height") {
@@ -296,10 +296,10 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 						if (typeof(_.callback) === "function") _.callback();
 					}
 				});
-				$el.Q.route($el);
+				$el.Q.next();
 			});
 
-			$el.Q.add(function($el) {
+			$el.Q.add(function() {
 				$el.attr('data-transition', 'slideUp').css({
 					'height'         : '0px',
 					'margin-top'     : '0px',
@@ -307,10 +307,10 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 					'padding-top'    : '0px',
 					'padding-bottom' : '0px'
 				});
-				$el.Q.route($el);
+				$el.Q.next();
 			});
 
-			$el.Q.start($el);
+			$el.Q.start();
 
 		}
 
@@ -391,7 +391,7 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 			
 			if (typeof($el.attr('data-transition')) === "undefined") {
 
-				$el.Q.add(function($el) {
+				$el.Q.add(function() {
 					$el.removeAttr('style').hide().removeTransition().css({
 						'display'        : 'block',
 						'overflow'       : 'hidden',
@@ -401,12 +401,12 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 						'margin-top'     : '0px',
 						'margin-bottom'  : '0px'
 					});
-					$el.Q.route($el);
+					$el.Q.next();
 				});
 
-				$el.Q.add(function($el) {
+				$el.Q.add(function() {
 					$el.setSlideTransition(_.duration, _.easing);
-					$el.Q.route($el);
+					$el.Q.next();
 				});
 
 				$el.attr({
@@ -419,7 +419,7 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 
 			};
 
-			$el.Q.add(function($el) {
+			$el.Q.add(function() {
 				$el.on(transitionEnd + _.namespace, function(e) {
 					e.stopPropagation();
 					if (e.originalEvent.propertyName === "height") {
@@ -428,10 +428,10 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 						if (typeof(_.callback) === "function") _.callback();
 					}
 				});
-				$el.Q.route($el);
+				$el.Q.next();
 			});
 
-			$el.Q.add(function($el) {
+			$el.Q.add(function() {
 				$el.attr('data-transition', 'slideDown').css({
 					'height'         : $el.attr('data-height'),
 					'padding-top'    : $el.attr('data-padding-top'),
@@ -439,10 +439,10 @@ function rewriteMethods(transitionEnd, vendorPrefix) {
 					'margin-top'     : $el.attr('data-margin-top'),
 					'margin-bottom'  : $el.attr('data-margin-bottom')
 				});
-				$el.Q.route($el);
+				$el.Q.next();
 			});
 
-			$el.Q.start($el);
+			$el.Q.start();
 		
 		}
 
