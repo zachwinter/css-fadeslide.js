@@ -7,7 +7,7 @@ The default methods are stored and used for browsers that don't support CSS tran
 
 **Pretend it's not even there.**
 
-```
+```javascript
 $(el).fadeIn(300);
 
 $(el).fadeOut({
@@ -18,6 +18,23 @@ $(el).fadeOut({
 $(el).slideToggle('slow', function(){
 	// Woah.
 });
+```
+
+## How to use
+
+First of all make sure you have jQuery loaded, then load the css-fadeslide.js file.
+This should then patch jQuery to Enable CSS Transitions.
+
+```javascript
+<script src="myproject/js/jQuery.js"></script>
+<script src="myproject/js/css-fadeslide/build/css-fadeslide.min.js"></script>
+```
+
+Or copy the dist/css-fadeslide.min.js file into your js folder and include it like this:
+
+```javascript
+<script src="myproject/js/jQuery.js"></script>
+<script src="myproject/js/css-fadeslide.min.js"></script>
 ```
 
 Changelog
